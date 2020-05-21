@@ -11,7 +11,9 @@ const jsImport = require('gulp-js-import');
 const sourcemaps = require('gulp-sourcemaps');
 const htmlPartial = require('gulp-html-partial');
 const clean = require('gulp-clean');
-const isProd = process.env.NODE_ENV === 'prod';
+const isProd = process.env.NODE_ENV === 'min';
+const autoprefixer = require('gulp-autoprefixer');
+
 
 const htmlFile = [
     'src/*.html'
@@ -34,6 +36,8 @@ function css() {
         .pipe(sass({
             includePaths: ['node_modules']
         }).on('error', sass.logError))
+        .pipe(autoprefixer({ cascade: false
+        }))
         .pipe(gulpIf(!isProd, sourcemaps.write()))
         .pipe(gulpIf(isProd, cssmin()))
         .pipe(gulp.dest('docs/css/'));
